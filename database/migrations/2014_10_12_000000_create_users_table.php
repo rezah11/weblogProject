@@ -18,7 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->enum('gender',\App\Models\User::GENDER)->default(\App\Models\User::GENDER_MALE);
             $table->string('password');
+            $table->enum('type',\App\Models\User::TYPES)->default(\App\Models\User::TYPE_USER);
+            $table->string('image_profile',150)->default('avatar1');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -9,6 +9,14 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    const TYPE_ADMIN = 'admin';
+    const TYPE_USER = 'user';
+    const TYPE_MANAGER = 'manager';
+    const TYPES = [self::TYPE_ADMIN, self::TYPE_MANAGER, self::TYPE_USER];
+    const GENDER_MALE='male';
+    const GENDER_FEMALE='female';
+    const GENDER=[self::GENDER_MALE,self::GENDER_FEMALE];
+
     use HasFactory, Notifiable;
 
     /**
@@ -40,4 +48,42 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function fallowing()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'followers_user_id');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followers_user_id', 'following_user_id');
+    }
+
+    public function post_likes()
+    {
+        return $this->belongsToMany(Post::class,'likes')->withPivot('like')->withTimestamps();
+}
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'user_id','id');
+}
+    public function isAdmin()
+    {
+        return $this->type === self::TYPE_ADMIN;
+    }
+
+    public function isManager()
+    {
+        return $this->type === self::TYPE_MANAGER;
+    }
+
+    public function isUser()
+    {
+        return $this->type === self::TYPE_USER;
+    }
 }
