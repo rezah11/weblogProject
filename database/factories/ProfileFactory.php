@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ImageFactory extends Factory
+class ProfileFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -13,10 +13,8 @@ class ImageFactory extends Factory
      */
     public function definition()
     {
-        static $image=1;
         return [
-            'image_url'=>'download.png',
-            'post_id'=>$image++
+            //
         ];
     }
 }

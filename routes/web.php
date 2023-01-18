@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 //    return view('welcome');
-    return view('index');
+    $posts=\App\Models\Post::all();
+    $images=\App\Models\Image::all();
+    return view('index')->with(compact('posts','images'));
 })->middleware('auth');
 
 Auth::routes();

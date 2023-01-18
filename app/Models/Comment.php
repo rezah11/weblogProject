@@ -18,4 +18,14 @@ class Comment extends Model
     {
         return $this->belongsTo(Post::class,'post_id','id');
     }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class,'parent_id','id');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Likeable::class,'likeable');
+    }
 }

@@ -22,11 +22,13 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+//        $rand=random_int(1,6);
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('123456'), // password
+            'image_profile'=>'avatar'.random_int(1,5).'.png',
             'remember_token' => Str::random(10),
         ];
     }

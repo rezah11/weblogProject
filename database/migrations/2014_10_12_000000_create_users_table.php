@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender',\App\Models\User::GENDER)->default(\App\Models\User::GENDER_MALE);
             $table->string('password');
             $table->enum('type',\App\Models\User::TYPES)->default(\App\Models\User::TYPE_USER);
-            $table->string('image_profile',150)->default('avatar1');
+            $table->string('image_profile',150)->default('avatar1.png');
             $table->rememberToken();
             $table->timestamps();
         });

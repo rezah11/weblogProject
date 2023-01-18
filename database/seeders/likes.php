@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
+use App\Models\Likeable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PostSeeder extends Seeder
+class likes extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,10 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
+        //
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        DB::table('posts')->truncate();
+        DB::table('likable')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-        Post::factory(20)->create();
+        Likeable::factory(20)->create();
     }
 }

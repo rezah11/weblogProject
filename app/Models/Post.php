@@ -21,9 +21,9 @@ protected $fillable=[
         return$this->hasMany(Image::class, 'post_id', 'id');
     }
 
-    public function user_likes()
+    public function likes()
     {
-        return $this->belongsToMany(User::class,'likes')->withPivot('like')->withTimestamps();
+        return $this->morphMany(Likeable::class,'likeable');
     }
 
     public function comments()

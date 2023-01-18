@@ -18,11 +18,13 @@ class usersTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('users')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         $this->createAdminUser();
         $this->createManagerUser();
         $this->CreateReqularUser();
-//        User::factory()->create(10);
+        User::factory(10)->create();
     }
 
     private function createAdminUser()

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image_profile'
     ];
 
     /**
@@ -85,5 +86,15 @@ class User extends Authenticatable
     public function isUser()
     {
         return $this->type === self::TYPE_USER;
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Likeable::class,'user_id','id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class,'user_id','id');
     }
 }
