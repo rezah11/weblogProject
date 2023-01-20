@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Image;
 use App\Models\Post;
 use App\Rules\postRules;
@@ -19,33 +20,20 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function createPost(Request $request)
+    public function createPost(PostRequest $request)
     {
 
         $post = new Post();
         $user = auth()->user();
         \Illuminate\Support\Facades\Gate::forUser($user)->authorize('create', $post);
-        $rules = [
-            'title' => 'required|alpha',
-            'summary' => 'required|string',
-            'content' => 'required|string',
-            'images' => 'nullable',
-            'images.*' => 'mimes:jpeg,jpg,png|max:60',
-        ];
-        $messege = [
-            'required' => 'the attribute field is required',
-            'alpha'=>'insert only alphabetic chars for title',
-            'mimes' => 'most be type of :  jpeg,jpg,png',
-            'max'=>'most be lower than 60 KB',
-        ];
+
 //        $request->file('images')->getO
 //        dd($request->file('images')->storeAs(asset('css'),'a.jpg'));
-        $valid = $this->validate($request, $rules, $messege);
         $post=$post->newQuery()->create(array(
             'user_id' => $user->id,
             'title' => $request->title,
             'summary' => $request->summary,
-            'content' => $request->content
+            'content' => $request->content,
         ));
 //        dd($post->id);
       $request->all()->images ?? $this->savaPostPics($request->file('images'),$post->id);

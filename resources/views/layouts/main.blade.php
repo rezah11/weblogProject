@@ -242,9 +242,12 @@
                             @endforeach
                         </div><!-- /.panel-body -->
                         <div class="panel-footer">
-                            <form action="#" class="form-horizontal">
+                            <form action="{{route('createComment')}}" class="form-horizontal" method="post">
+                                @csrf
                                 <div class="form-group has-feedback no-margin">
-                                    <input class="form-control" type="text" placeholder="Your comment here...">
+                                    <input type="hidden" value="{{auth()->user()->id}}" name="userId">
+                                    <input type="hidden" value="{{$post->id}}" name="postId">
+                                    <input class="form-control" type="text" placeholder="Your comment here..." name="comment">
                                     <br/>
                                     <button type="submit"
                                             class="btn btn-theme btn-primary form-control"> send

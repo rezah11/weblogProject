@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Profile;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PostSeeder::class);
         $this->call(ImageSeeder::class);
         $this->call(CommentSeeder::class);
-        $this->call(likes::class);
+        $this->call(likesSeeder::class);
+        $this->call(ProfileSeeder::class);
     }
 }

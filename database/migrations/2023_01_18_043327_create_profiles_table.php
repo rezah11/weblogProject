@@ -18,7 +18,7 @@ class CreateProfilesTable extends Migration
             $table->unsignedInteger('age');
             $table->unsignedInteger('tel');
             $table->string('city');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

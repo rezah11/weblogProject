@@ -20,12 +20,13 @@ class likeableFactory extends Factory
         $type=$this->faker->randomElement(['post','comment']);
         $likeId=$this->faker->numberBetween(1 , 20);
         $userTypeLike = $this->faker->unique()->regexify("/^$userId-$type-$likeId-[a-z]{2}");
-
+//            dd($userTypeLike);
         return [
             'like' => $this->faker->boolean,
-            'likeable_id' =>$likeId,
-            'likeable_type' =>$type,
-            'user_id' => $userId,
+            'likeable_id' =>explode('-',$userTypeLike)[2],
+            'likeable_type' =>explode('-',$userTypeLike)[1],
+            'user_id' => explode('-',$userTypeLike)[0],
+
         ];
     }
 

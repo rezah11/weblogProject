@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     use HasFactory;
-    protected $fillable=['age','tel','city'];
+    protected $fillable=['age','tel','city','user_id'];
 
     public function user()
     {
