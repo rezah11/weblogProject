@@ -17,7 +17,6 @@ class commentController extends Controller
 
     public function create(CommentRequest $request)
     {
-        dd($request);
         $comment=new Comment();
         $user=auth()->user();
         Gate::forUser($user)->authorize('create',$comment);
@@ -26,5 +25,6 @@ class commentController extends Controller
             'user_id'=>$request->userId,
             'post_id'=>$request->postId
         ])->save();
+        return redirect()->back();
     }
 }

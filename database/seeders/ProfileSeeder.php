@@ -18,6 +18,9 @@ class ProfileSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('profiles')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-        Profile::factory(13)->create();
+
+        for ($i = 0; $i < 10 ; $i++) {
+            Profile::factory()->create();
+        }
     }
 }

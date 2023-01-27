@@ -15,26 +15,28 @@ class likeableFactory extends Factory
      */
     public function definition()
     {
-        $user=User::query()->inRandomOrder()->first();
-        $user instanceof User ? $userId=$user->id : $userId=null;
+//        $user=User::query()->inRandomOrder()->first();
+//        $user instanceof User ? $userId=$user->id : $userId=null;
         $type=$this->faker->randomElement(['post','comment']);
-        $likeId=$this->faker->numberBetween(1 , 20);
-        $userTypeLike = $this->faker->unique()->regexify("/^$userId-$type-$likeId-[a-z]{2}");
-//            dd($userTypeLike);
+        $likeId=$this->faker->unique()->numberBetween(1 , 20);
+//        $userTypeLike = $this->faker->unique()->regexify("/^$userId-$likeId");
+//            var_dump($this->getUser());
         return [
             'like' => $this->faker->boolean,
-            'likeable_id' =>explode('-',$userTypeLike)[2],
-            'likeable_type' =>explode('-',$userTypeLike)[1],
-            'user_id' => explode('-',$userTypeLike)[0],
-
+            'likeable_id' =>$likeId,
+            'likeable_type' =>$type,
+            'user_id' => $this->getUser(),
         ];
     }
 
     private function getUser()
     {
-        $user = User::query()->pluck('id')->toArray();
-        $rand = $user[array_rand($user)];
-        return $rand;
+        $user = collect(User::query()->orderBy('id','asc')->pluck('id')->toArray());
+//        dd($user->random(1)->first());
+//        $rand = $user[array_rand($user)];
+//        $rand = $user->random(1)->first();
+//        dd($rand);
+        return $user->random(1)->first();
 
     }
 }
