@@ -138,8 +138,20 @@
                                     <em class="text-xs text-muted">on <span
                                             class="text-danger">{{$comment->created_at}}</span></em>
                                     <br/>
-                                    {{$pos}} <a href="#"> <i class="fa fa-thumbs-o-up"></i> </a>
-                                    {{$neg}} <a href="#"> <i class="fa fa-thumbs-o-down"></i> </a>
+                                    {{$pos}}
+                                    <form method="post" action="{{route('likeComment')}}" class="">
+                                        @csrf
+                                        <input type="hidden" value="{{$comment->id}}" name="commentId">
+                                        <input type="hidden" value="{{auth()->user()->id}}" name="userId">
+                                        <button type="submit"><i class="fa fa-thumbs-o-up"></i></button>
+                                    </form>
+                                    {{$neg}}
+                                    <form method="post" action="{{route('disLikeComment')}}" class="">
+                                        @csrf
+                                        <input type="hidden" value="{{$comment->id}}" name="commentId">
+                                        <input type="hidden" value="{{auth()->user()->id}}" name="userId">
+                                        <button type="submit"><i class="fa fa-thumbs-o-down"></i></button>
+                                    </form>
                                 </div><!-- /.media-body -->
                             </div><!-- /.media -->
                             <div class="line no-margin"></div>

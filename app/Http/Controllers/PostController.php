@@ -56,8 +56,8 @@ class PostController extends Controller
 
     public function likePost(Request $request)
     {
-        $like = new Likeable();
-        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('create', $like);
+
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('create', Likeable::class);
         $existLike = Likeable::query()
             ->where([
                 ['likeable_id', $request->postId],
@@ -66,11 +66,12 @@ class PostController extends Controller
             ])->first();
         if (empty($existLike)) {
             $post = Post::find($request->postId);
-            $like = [
+            $like = new Likeable([
                 'user_id' => $request->userId,
-            ];
-            $like->likeable()->associate($post);
-            $like->save();
+            ]);
+//            $like->likeable()->associate($post);
+            $post->likes()->save($like);
+//            $like->save();
 //            dd(true,$request->all(), $like->likeable()->associate($post));
 //            dd($like);
         } elseif ($existLike->like === 0) {
@@ -84,8 +85,8 @@ class PostController extends Controller
 
     public function disLikePost(Request $request)
     {
-        $like = new Likeable();
-        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('create', $like);
+
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('create', Likeable::class);
         $existLike = Likeable::query()
             ->where([
                 ['likeable_id', '=', $request->postId],
@@ -96,13 +97,15 @@ class PostController extends Controller
         if (empty($existLike)) {
 //            dd('ooonn');
             $post = Post::find($request->postId);
-            $like = [
+            $like = new Likeable([
                 'like' => false,
                 'user_id' => $request->userId
-            ];
+            ]);
+
+//            dd($like, $post);
             $like->likeable()->associate($post);
             $like->save();
-//            dd(true,$request->all(), $like->likeable()->associate($post));
+//            dd(true,$request->all(), $likex`x`->likeable()->associate($post));
 //            dd($like);
         } else if ($existLike->like === 1) {
             $existLike->like = false;

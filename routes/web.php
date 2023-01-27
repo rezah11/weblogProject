@@ -30,6 +30,7 @@ Route::group(['prefix'=>'post'],function (){
 });
 Route::group(['prefix'=>'comment'],function (){
     Route::post('/createComment',[\App\Http\Controllers\commentController::class,'create'])->name('createComment');
-
+    Route::post('/likeComment',[\App\Http\Controllers\commentController::class,'likeComment'])->name('likeComment');
+    Route::post('/disLikeComment',[\App\Http\Controllers\commentController::class,'disLikeComment'])->name('disLikeComment');
 });
 

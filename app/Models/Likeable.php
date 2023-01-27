@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Likeable extends Model
 {
     use HasFactory;
-    protected $table='likable';
-protected $fillable=[
-    'like','likeable_id','likeable_type','user_id'
+
+    protected $table = 'likable';
+    protected $fillable = [
+        'like', 'likeable_id', 'likeable_type', 'user_id'
     ];
+
     public function likeable()
     {
         return $this->morphTo();
@@ -19,6 +21,6 @@ protected $fillable=[
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
