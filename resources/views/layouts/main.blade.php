@@ -125,7 +125,7 @@
     </div>
 </div>
 </div>
-<script type="text/javascript">
+<script src="{{asset('js/follow.js')}}" type="text/javascript">
 
 </script>
 </body>

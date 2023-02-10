@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -25,5 +27,24 @@ class HomeController extends Controller
     {
         return view('dashboard.home');
     }
+
+    public function userFollow()
+    {
+        $user=auth()->user();
+        $userFollower=User::find(\request()->id);
+        Gate::forUser(auth()->user())->authorize('follow',$user);
+        $user->following()->attach($userFollower);
+        return 'this';
+//        dd('this is test');
+    }
+
+    public function userUnfollow()
+    {
+        $user=auth()->user();
+        $userFollower=User::find(\request()->id);
+        Gate::forUser(auth()->user())->authorize('follow',$user);
+        $user->following()->detach($userFollower);
+        return 'those';
+}
 
 }

@@ -2,7 +2,7 @@
 @section('content')
     @if(auth()->user()->isUser())
         @foreach($errors->all() as $error)
-            <li>{{$error}}</li>
+            <li xmlns="http://www.w3.org/1999/html">{{$error}}</li>
         @endforeach
         @if(session('success'))
             <div class="alert-success">
@@ -51,11 +51,39 @@
                                     <a href="#"
                                        class="media-heading block mb-0 h4 text-white">{{$post->user->name}}</a>
                                     <span class="text-white h6">{{$post->created_at}}</span>
+                                    <a class="pull-right">
+                                        {{--                                            {{dd(is_null(auth()->user()->following()->get()),auth()->user()->following()->get()->isEmpty())}}--}}
+                                        @if(auth()->user()->following()->get()->isEmpty() && auth()->user()->id !== $post->user->id
+//=== $post->user->id
+)
+                                            <button class="btn btn-success" name="follow" value=""/><span>follow</span><input type="hidden" class="userFollower" value="{{$post->user->id}}"/></button>
+                                        @else
+{{--                                           {{dd(auth()->user()->following()->get()[0])}}--}}
+{{--                                            @foreach(auth()->user()->following()->get() as $value)--}}
+                                                {{--                                            {{dd(auth()->user()->id !== $post->user->id)}}--}}
+                                            @php
+                                            $arr=auth()->user()->following()->get();
+                                            @endphp
+                                                @if(!($arr->where('id',$post->user->id)->isEmpty())  && auth()->user()->id !== $post->user->id)
+                                                    <button class="btn btn-danger" name="unFollow" value="unFollow"/>
+                                                    <span>unFollow</span>
+                                                    <input type="hidden" class="userFollower" value="{{$post->user->id}}"/></button>
+                                                @elseif(auth()->user()->id !== $post->user->id)
+                                                    <button class="btn btn-success" name="follow" value="follow"/>
+                                                    <span>follow</span><input type="hidden" class="userFollower" value="{{$post->user->id}}"/></button>
+
+                                                @endif
+{{--                                            @endforeach--}}
+                                            {{--                                                {{dd(auth()->user()->following()->id)}}--}}
+
+
+                                        @endif
+                                    </a>
                                 </div>
                             </div>
                         </div><!-- /.pull-left -->
                         <div class="pull-right">
-                            {{--                                <a href="#" class="text-white h4"><i class="fa fa-heart"></i> 15.5K</a>--}}
+                            {{--                                <a href="#" cl ass="text-white h4"><i class="fa fa-heart"></i> 15.5K</a>--}}
                         </div><!-- /.pull-right -->
                         <div class="clearfix"></div>
                     </div><!-- /.panel-heading -->
@@ -84,22 +112,22 @@
                             @endforeach
                             <br>
                             <span class="pull-left">{{$postPos}}</span>
-                                <form method="post" action="{{route('likePost')}}" class="pull-left">
-                                    @csrf
-                                    <input type="hidden" value="{{$post->id}}" name="postId">
-                                    <input type="hidden" value="{{auth()->user()->id}}" name="userId">
-                                    <button type="submit"><i class="fa fa-thumbs-o-up"></i></button>
-                                </form>
-{{--                                <a href="#">  </a>--}}
-{{--                            {{var_dump($postNeg)}}--}}
+                            <form method="post" action="{{route('likePost')}}" class="pull-left">
+                                @csrf
+                                <input type="hidden" value="{{$post->id}}" name="postId">
+                                <input type="hidden" value="{{auth()->user()->id}}" name="userId">
+                                <button type="submit"><i class="fa fa-thumbs-o-up"></i></button>
+                            </form>
+                            {{--                                <a href="#">  </a>--}}
+                            {{--                            {{var_dump($postNeg)}}--}}
                             <span class="pull-left">{{$postNeg}}</span>
-                                <form method="post" action="{{route('disLikePost')}}" class="">
-                                    @csrf
-                                    <input type="hidden" value="{{$post->id}}" name="postId">
-                                    <input type="hidden" value="{{auth()->user()->id}}" name="userId">
-                                    <button type="submit"><i class="fa fa-thumbs-o-down"></i></button>
-                                </form>
-{{--                                <a href="#">  </a>--}}
+                            <form method="post" action="{{route('disLikePost')}}" class="">
+                                @csrf
+                                <input type="hidden" value="{{$post->id}}" name="postId">
+                                <input type="hidden" value="{{auth()->user()->id}}" name="userId">
+                                <button type="submit"><i class="fa fa-thumbs-o-down"></i></button>
+                            </form>
+                            {{--                                <a href="#">  </a>--}}
                         @endif
                         <div class="inner-all block">
                             @if(count($post->comments))
@@ -111,12 +139,12 @@
                         @foreach($post->comments as $comment)
                             <div class="media inner-all no-margin">
                                 <div class="pull-left">
-                                    <form action=""  method="post">
-                                       <input type="hidden" name>
+                                    <form action="" method="post">
+                                        <input type="hidden" name>
 
-                                    <img src="{{asset('users/imageProfile/'.$comment->user->image_profile)}}"
-                                         alt="..."
-                                         class="img-post2">
+                                        <img src="{{asset('users/imageProfile/'.$comment->user->image_profile)}}"
+                                             alt="..."
+                                             class="img-post2">
                                     </form>
                                 </div><!-- /.pull-left -->
                                 <div>
@@ -163,7 +191,8 @@
                             <div class="form-group has-feedback no-margin">
                                 <input type="hidden" value="{{auth()->user()->id}}" name="userId">
                                 <input type="hidden" value="{{$post->id}}" name="postId">
-                                <input class="form-control" type="text" placeholder="Your comment here..." name="comment">
+                                <input class="form-control" type="text" placeholder="Your comment here..."
+                                       name="comment">
                                 <br/>
                                 <button type="submit"
                                         class="btn btn-theme btn-primary form-control"> send

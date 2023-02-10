@@ -28,7 +28,8 @@
                         </figure>
                         <div class="cover-body d-flex justify-content-between align-items-center">
                             <div>
-                                <img class="profile-pic" src="{{asset('users/imageProfile/'.auth()->user()->image_profile)}}"
+                                <img class="profile-pic"
+                                     src="{{asset('users/imageProfile/'.auth()->user()->image_profile)}}"
                                      alt="profile">
                                 <span class="profile-name">{{auth()->user()->name}}</span>
                             </div>
@@ -151,7 +152,8 @@
                                 </div>
                             </div>
                         </div>
-                        <p>Hi! I'm {{auth()->user()->name}} the Senior UI Designer at Vibrant. We hope you enjoy the design and quality of
+                        <p>Hi! I'm {{auth()->user()->name}} the Senior UI Designer at Vibrant. We hope you enjoy the
+                            design and quality of
                             Social.</p>
                         <div class="mt-3">
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">Joined:</label>
@@ -211,8 +213,8 @@
             </div>
             <!-- left wrapper end -->
             <!-- middle wrapper start -->
-            @yield('content')
-            <!-- middle wrapper end -->
+        @yield('content')
+        <!-- middle wrapper end -->
             <!-- right wrapper start -->
             <div class="d-none d-xl-block col-xl-3 right-wrapper">
                 <div class="row">
@@ -429,6 +431,29 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        // console.log('test');
+        $(".test").bind('click', function () {
+            if (confirm('are you sure to remove this image?')) {
+                var $element=$(this).closest('div');
+                $.ajax({
+                    type: "GET",
+                    url: window.location.href + '/delImage/' + $(this).attr('id'),
+                    dataType: "html",   //expect html to be returned
+                    success: function (response) {
+                        if (response === '0') {
+                            console.log('this is response:' + response);
+                        } else {
+                            $element.fadeOut(300);
+                            }
+                    }
+                });
+            }
+
+
+        });
+
+    });
 
 </script>
 </body>

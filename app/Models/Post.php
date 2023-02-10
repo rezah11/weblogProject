@@ -30,4 +30,5 @@ protected $fillable=[
     {
         return $this->hasMany(Comment::class,'post_id','id');
     }
+
 }

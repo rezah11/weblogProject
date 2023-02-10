@@ -17,7 +17,7 @@ class User extends Authenticatable
     const GENDER_FEMALE='female';
     const GENDER=[self::GENDER_MALE,self::GENDER_FEMALE];
 
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable ;
 
     /**
      * The attributes that are mass assignable.
@@ -50,16 +50,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function fallowing()
+    public function following()
     {
-        return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'followers_user_id');
+        return $this->belongsToMany(self::class, 'follows','followers_user_id','following_user_id')->withTimestamps();
     }
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follows', 'followers_user_id', 'following_user_id');
+        return $this->belongsToMany(self::class,'follows','following_user_id','followers_user_id')->withTimestamps();
     }
-
     public function post_likes()
     {
         return $this->belongsToMany(Post::class,'likes')->withPivot('like')->withTimestamps();
@@ -97,4 +96,5 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class,'user_id','id');
     }
+
 }

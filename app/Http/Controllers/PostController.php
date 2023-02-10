@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Likeable;
 use App\Models\Post;
+use App\Policies\imagePolicy;
+use App\Policies\postPolicy;
 use App\Rules\postRules;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -44,7 +49,7 @@ class PostController extends Controller
     private function savaPostPics($images, $postId)
     {
         foreach ($images as $image) {
-            $name = Str::random(10) . $image->getClientOriginalName() . Str::random(10);
+            $name = Str::random(20) . $image->getClientOriginalName();
             $image->move('postPics', $name);
             Image::query()->create([
                 'image_url' => $name,
@@ -112,5 +117,62 @@ class PostController extends Controller
             $existLike->save();
         }
         return redirect()->back();
+    }
+
+    public function deleteImages(Request $request)
+    {
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete', imagePolicy::class);
+//dd($request->id);
+        try {
+            Image::query()->where('id', $request->id)->delete();
+            return true;
+
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    public function updatePost(PostRequest $request)
+    {
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('create', postPolicy::class);
+//        dd($request->id);
+        $post = Post::findOrFail($request->id);
+        $post->title = $request->title;
+        $post->summary = $request->summary;
+        $post->content = $request->content;
+        $post->save();
+        if (isset($request->all()->images)) {
+//            $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
+            $this->savaPostPics($request->file('images'), $post->id);
+        }
+        return redirect(\route('userPost'));
+    }
+
+    public function deletePost($id)
+    {
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete' , postPolicy::class);
+        $comments=Comment::query()->where('post_id',$id);
+        $images=Image::query()->where('post_id',$id);
+//        dd($comment->get()->toArray(),empty($comment->get()->toArray()));
+        if (!empty($comments->get()->toArray())){
+            $comments->delete();
+            $this->deleteImageFiles($comments->get()->toArray());
+//            dd($comment);
+        }
+        if (!empty($images->pluck('image_url')->toArray())){
+
+            $this->deleteImageFiles($images->pluck('image_url')->toArray());
+
+            $images->delete();
+        }
+        Post::query()->findOrFail($id)->delete();
+        return redirect()->back();
+    }
+
+    private function deleteImageFiles(array $toArray)
+    {
+        foreach ($toArray as $value){
+            File::delete('postPics/'.$value);
+        }
     }
 }

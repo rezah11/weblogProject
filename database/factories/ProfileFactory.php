@@ -16,7 +16,9 @@ class ProfileFactory extends Factory
     {
 //        $x=1;
 //        $x++;
-        var_dump($this->faker->unique()->randomElement(User::query()->pluck('id')->toArray()));
+//        dd();
+        $ids=User::query()->pluck('id')->toArray();
+//        var_dump();
 //var_dump($this->getUser());
 //        dd('$this->faker->unique()->numberBetween(1,13)');
 //        $user=collect(User::query()->orderBy('id','asc')->pluck('id')->toArray());
@@ -28,7 +30,7 @@ class ProfileFactory extends Factory
             'age'=>$this->faker->numberBetween(10,60),
             'tel'=>$this->faker->buildingNumber(),
             'city'=>$this->faker->city,
-            'user_id'=>$this->faker->unique()->randomElement(User::query()->pluck('id')->toArray())
+            'user_id'=>$this->faker->unique()->randomElement($ids),
         ];
     }
 
