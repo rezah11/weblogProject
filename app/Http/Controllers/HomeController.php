@@ -34,7 +34,7 @@ class HomeController extends Controller
         $userFollower=User::find(\request()->id);
         Gate::forUser(auth()->user())->authorize('follow',$user);
         $user->following()->attach($userFollower);
-        return 'this';
+        return redirect()->back();
 //        dd('this is test');
     }
 
@@ -44,7 +44,16 @@ class HomeController extends Controller
         $userFollower=User::find(\request()->id);
         Gate::forUser(auth()->user())->authorize('follow',$user);
         $user->following()->detach($userFollower);
-        return 'those';
+        return redirect()->back();
+}
+
+    public function unfollowFollowingUser()
+    {
+        $user=auth()->user();
+        $userFollower=User::find(\request()->id);
+        Gate::forUser(auth()->user())->authorize('follow',$user);
+        $user->followers()->detach($userFollower);
+        return redirect()->back();
 }
 
 }

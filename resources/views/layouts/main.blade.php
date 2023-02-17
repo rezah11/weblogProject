@@ -107,11 +107,12 @@
                     <ul class="list-unstyled no-padding hidden-sm hidden-xs cover-menu">
                         <li class="active"><a href="{{route('userPost')}}"><i class="fa fa-fw fa-clock-o"></i> <span>Timeline</span></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-fw fa-user"></i> <span>About</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-user"></i> <span>following</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-users"></i><span>followers</span><small>(23)</small></a>
+                        </li>
                         <li><a href="#"><i class="fa fa-fw fa-photo"></i> <span>Photos</span> <small>(98)</small></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-fw fa-users"></i><span> Friends </span><small>(23)</small></a>
-                        </li>
+
 
                     </ul>
                 </div><!-- /.cover -->
