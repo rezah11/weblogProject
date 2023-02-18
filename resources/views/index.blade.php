@@ -37,6 +37,7 @@
     <div class="row">
 
         {{--    !!!!posts start!!!!        --}}
+{{--        {{dd(($posts))}}--}}
         @foreach($posts as $post)
             <div class="col-xs-12">
                 <div class="panel panel-success rounded shadow">

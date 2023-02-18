@@ -31,6 +31,28 @@ class userPolicy
 //        dd($user->id , auth()->user()->id);
         return $user->isUser();
     }
+        /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function allUsers(User $user)
+    {
+//        dd($user->id , auth()->user()->id);
+        return $user->isAdmin();
+    }
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function allPosts(User $user)
+    {
+//        dd($user->id , auth()->user()->id);
+        return $user->isAdmin() || $user->isManager();
+    }
     /**
      * Determine whether the user can view the model.
      *

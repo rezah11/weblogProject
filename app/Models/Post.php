@@ -28,7 +28,7 @@ protected $fillable=[
 
     public function comments()
     {
-        return $this->hasMany(Comment::class,'post_id','id');
+        return $this->hasMany(Comment::class,'post_id','id')->where('status',true);
     }
 
 }

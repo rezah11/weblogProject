@@ -39,7 +39,7 @@
                             <li><br></li>
                             <li>
                                 <div class="btn-group-vertical btn-block">
-                                    <a href="" class="btn btn-default"><i class="fa fa-cog pull-right"></i>Edit Account</a>
+                                    <a href="{{route('home')}}" class="btn btn-default"><i class="fa fa-cog pull-right"></i>Edit Account</a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -105,10 +105,13 @@
                              class="img-responsive full-width" alt="cover" style="max-height:200px;">
                     </div>
                     <ul class="list-unstyled no-padding hidden-sm hidden-xs cover-menu">
+                        @if(auth()->user()->isUser())
                         <li class="active"><a href="{{route('userPost')}}"><i class="fa fa-fw fa-clock-o"></i> <span>Timeline</span></a>
                         </li>
+
                         <li><a href="#"><i class="fa fa-fw fa-user"></i> <span>following</span></a></li>
                         <li><a href="#"><i class="fa fa-fw fa-users"></i><span>followers</span><small>(23)</small></a>
+                            @endif
                         </li>
                         <li><a href="#"><i class="fa fa-fw fa-photo"></i> <span>Photos</span> <small>(98)</small></a>
                         </li>

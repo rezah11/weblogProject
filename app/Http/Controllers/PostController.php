@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Comment;
+use App\Models\Follow;
 use App\Models\Image;
 use App\Models\Likeable;
 use App\Models\Post;
+use App\Models\Profile;
+use App\Models\User;
 use App\Policies\imagePolicy;
 use App\Policies\postPolicy;
+use App\Policies\userPolicy;
 use App\Rules\postRules;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
@@ -174,5 +178,25 @@ class PostController extends Controller
         foreach ($toArray as $value){
             File::delete('postPics/'.$value);
         }
+    }
+
+    public function removeUser()
+    {
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('allUsers', auth()->user());
+        $user=User::findOrFail(\request()->id);
+        $postIds=Post::query()->where('user_id',\request()->id)->pluck('id');
+
+//        dd($user,$postIds);
+        Follow::query()->where('following_user_id',\request()->id)->orWhere('followers_user_id',\request()->id)->delete();
+        Likeable::query()->where('user_id',\request()->id)->delete();
+        Comment::query()->where('user_id',\request()->id)->delete();
+        Profile::query()->where('user_id',\request()->id)->delete();
+        if (isset($postIds)){
+            foreach ($postIds as $id){
+                $this->deletePost($id);
+            }
+        }
+        $user->delete();
+        return redirect()->back();
     }
 }
