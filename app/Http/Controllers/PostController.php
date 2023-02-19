@@ -55,11 +55,11 @@ class PostController extends Controller
         foreach ($images as $image) {
             $name = Str::random(20) . $image->getClientOriginalName();
             $image->move('postPics', $name);
+//            dd('first');
             Image::query()->create([
                 'image_url' => $name,
                 'post_id' => $postId
             ]);
-//            dd($name);
         }
     }
 
@@ -141,11 +141,14 @@ class PostController extends Controller
         \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('create', postPolicy::class);
 //        dd($request->id);
         $post = Post::findOrFail($request->id);
+//        dd(isset($request->images));
+//        dd($request->all());
         $post->title = $request->title;
         $post->summary = $request->summary;
-        $post->content = $request->content;
+        $post->content = $request->get('content');
+//        dd($request->all(),);
         $post->save();
-        if (isset($request->all()->images)) {
+        if (isset($request->images)) {
 //            $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
             $this->savaPostPics($request->file('images'), $post->id);
         }

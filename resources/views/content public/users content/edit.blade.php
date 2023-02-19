@@ -66,9 +66,11 @@
         <div class="card-body">
             <form action="{{route('updatePost',['id'=>$postEdit->id])}}" method="post" enctype="multipart/form-data">
                 @csrf
+{{--                {{var_dump($postEdit->content)}}--}}
                 <input class="form-control" type="text" placeholder="title" value="{{$postEdit->title}}" name="title">
                 <input class="form-control" type="text" placeholder="summary" value="{{$postEdit->summary}}" name="summary">
                 <input class="form-control" type="text" placeholder="content" value="{{$postEdit->content}}" name="content">
+                <br>
                 @if($postEdit->images)
                     @foreach($postEdit->images as $image)
 
