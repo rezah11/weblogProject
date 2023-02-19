@@ -22,13 +22,13 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::group(['prefix' => 'dashboard'], function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/allusers', [App\Http\Controllers\HomeController::class, 'allUsers'])->name('allUsers');
-    Route::get('/allposts', [App\Http\Controllers\HomeController::class, 'allPosts'])->name('allPosts');
-    Route::get('/allposts/changeStatus/{id}', [App\Http\Controllers\HomeController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('/home', [App\Http\Controllers\userController::class, 'index'])->name('home');
+    Route::get('/allusers', [App\Http\Controllers\userController::class, 'allUsers'])->name('allUsers');
+    Route::get('/allposts', [App\Http\Controllers\userController::class, 'allPosts'])->name('allPosts');
+    Route::get('/allposts/changeStatus/{id}', [App\Http\Controllers\userController::class, 'changeStatus'])->name('changeStatus');
     Route::get('/allusers/removeuser/{id}', [App\Http\Controllers\PostController::class, 'removeUser'])->name('removeUser');
-    Route::get('/allcomments', [App\Http\Controllers\HomeController::class, 'allComments'])->name('allComments');
-    Route::get('/changestatuscomment/{id}', [App\Http\Controllers\HomeController::class, 'changeStatusComment'])->name('changeStatusComment');
+    Route::get('/allcomments', [App\Http\Controllers\userController::class, 'allComments'])->name('allComments');
+    Route::get('/changestatuscomment/{id}', [App\Http\Controllers\userController::class, 'changeStatusComment'])->name('changeStatusComment');
 
 });
 Auth::routes();
@@ -45,9 +45,9 @@ Route::group(['prefix' => 'post'], function () {
     Route::post('/disLikePost', [\App\Http\Controllers\PostController::class, 'disLikePost'])->name('disLikePost');
 });
 Route::group(['prefix' => 'user'], function () {
-    Route::get('/follow/{id}', [\App\Http\Controllers\HomeController::class, 'userFollow'])->name('userFollow');
-    Route::get('/unFollow/{id}', [\App\Http\Controllers\HomeController::class, 'userUnfollow'])->name('userUnfollow');
-    Route::get('/unFollowFollowing/{id}', [\App\Http\Controllers\HomeController::class, 'unfollowFollowingUser'])->name('UnfollowFollowing');
+    Route::get('/follow/{id}', [\App\Http\Controllers\userController::class, 'userFollow'])->name('userFollow');
+    Route::get('/unFollow/{id}', [\App\Http\Controllers\userController::class, 'userUnfollow'])->name('userUnfollow');
+    Route::get('/unFollowFollowing/{id}', [\App\Http\Controllers\userController::class, 'unfollowFollowingUser'])->name('UnfollowFollowing');
     Route::get('/follows/{type}', function () {
         return view('content public/follow');
     })->name('userFollowers')->middleware(['auth']);

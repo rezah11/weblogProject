@@ -12,7 +12,7 @@ use App\Policies\userPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class HomeController extends Controller
+class userController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -103,5 +103,18 @@ class HomeController extends Controller
         $comment->save();
         return redirect()->back();
 
+    }
+
+    /** api codes  **/
+    public function allUsersApi()
+    {
+        return response(User::all());
+    }
+
+    public function userApi(Request $request)
+    {
+        dd($request->id);
+        $user=User::findOrFail($request->id);
+        return response($user);
     }
 }

@@ -64,7 +64,7 @@
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg>
-                                <a class="pt-1px d-none d-md-block" href="{{route('userFollow',['type'=>'following'])}}">following</a>
+                                <a class="pt-1px d-none d-md-block" href="{{route('userFollowers',['type'=>'following'])}}">following</a>
                             </li>
                             <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -75,7 +75,7 @@
                                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                 </svg>
-                                <a class="pt-1px d-none d-md-block" href="{{route('userFollow',['type'=>'followers'])}}">followers <span class="text-muted tx-12">3,765</span></a>
+                                <a class="pt-1px d-none d-md-block" href="{{route('userFollowers',['type'=>'followers'])}}">followers <span class="text-muted tx-12">3,765</span></a>
                             </li>
                             <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

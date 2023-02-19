@@ -17,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/test',function (){
+//    return [
+//        'name'=>'reza',
+//        'family'=>'hosseini',
+//    ];
+    return response()->json(['error'=>'testErr'],401);
+});
+Route::group(['prefix'=>'user'],function (){
+   Route::get('/users',[\App\Http\Controllers\userController::class,'allUsersApi'])->name('usersApi');
+   Route::get('/{id}',[\App\Http\Controllers\userController::class,'user'])->name('userApi');
+});
