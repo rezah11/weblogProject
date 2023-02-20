@@ -43,7 +43,7 @@ class PostController extends Controller
             'user_id' => $user->id,
             'title' => $request->title,
             'summary' => $request->summary,
-            'content' => $request->content,
+            'content' => $request->get('content'),
         ));
 //        dd($post->id);
         $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
