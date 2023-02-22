@@ -158,21 +158,21 @@ class PostController extends Controller
     public function deletePost($id)
     {
         \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete' , postPolicy::class);
-        $comments=Comment::query()->where('post_id',$id);
+//        $comments=Comment::query()->where('post_id',$id);
         $images=Image::query()->where('post_id',$id);
 //        dd($comment->get()->toArray(),empty($comment->get()->toArray()));
-        if (!empty($comments->get()->toArray())){
-            $comments->delete();
-            $this->deleteImageFiles($comments->get()->toArray());
-//            dd($comment);
-        }
+//        if (!empty($commeDDnts->get()->toArray())){
+//            $comments->delete();
+//            $this->deleteImageFiles($comments->get()->toArray());
+////            dd($comment);
+//        }
+        Post::query()->findOrFail($id)->delete();
         if (!empty($images->pluck('image_url')->toArray())){
 
             $this->deleteImageFiles($images->pluck('image_url')->toArray());
 
-            $images->delete();
+            $images->forceDelete();
         }
-        Post::query()->findOrFail($id)->delete();
         return redirect()->back();
     }
 

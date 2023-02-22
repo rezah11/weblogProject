@@ -20,7 +20,7 @@ class CreateLikesTable extends Migration
             $table->string('likeable_type');
             $table->unsignedBigInteger('user_id');
             $table->unique(['likeable_id','likeable_type','user_id']);
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
