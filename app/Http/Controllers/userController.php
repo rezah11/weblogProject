@@ -113,7 +113,7 @@ class userController extends Controller
 
     public function userApi(Request $request)
     {
-        dd($request->id);
+//        dd($request->id);
         $user=User::findOrFail($request->id);
         return response($user);
     }
