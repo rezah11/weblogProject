@@ -160,6 +160,13 @@ class PostController extends Controller
         \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete' , postPolicy::class);
 //        $comments=Comment::query()->where('post_id',$id);
         $images=Image::query()->where('post_id',$id);
+
+        if (!empty($images->pluck('image_url')->toArray())){
+//            dd('inja');
+            $this->deleteImageFiles($images->pluck('image_url')->toArray());
+
+            $images->forceDelete();
+        }
 //        dd($comment->get()->toArray(),empty($comment->get()->toArray()));
 //        if (!empty($commeDDnts->get()->toArray())){
 //            $comments->delete();
@@ -167,12 +174,7 @@ class PostController extends Controller
 ////            dd($comment);
 //        }
         Post::query()->findOrFail($id)->delete();
-        if (!empty($images->pluck('image_url')->toArray())){
 
-            $this->deleteImageFiles($images->pluck('image_url')->toArray());
-
-            $images->forceDelete();
-        }
         return redirect()->back();
     }
 
