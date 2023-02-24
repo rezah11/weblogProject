@@ -114,7 +114,12 @@ class userController extends Controller
     public function userApi(Request $request)
     {
 //        dd($request->id);
-        $user=User::findOrFail($request->id);
-        return response($user);
+//        try {
+            $user=User::findOrFail($request->id);
+            return response($user);
+//        }catch (\Exception $exception){
+//            return response(['messege'=>$exception->getMessage()]);
+//        }
+
     }
 }
