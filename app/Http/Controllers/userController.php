@@ -115,8 +115,9 @@ class userController extends Controller
     {
 //        dd($request->id);
 //        try {
-            $user=User::findOrFail($request->id);
-            return response($user);
+        $a = 5 / 0;
+        $user = User::findOrFail($request->id);
+        return response($user);
 //        }catch (\Exception $exception){
 //            return response(['messege'=>$exception->getMessage()]);
 //        }
