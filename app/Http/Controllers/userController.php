@@ -115,12 +115,38 @@ class userController extends Controller
     {
 //        dd($request->id);
 //        try {
-        $a = 5 / 0;
+//        $a = 5 / 0;
         $user = User::findOrFail($request->id);
         return response($user);
 //        }catch (\Exception $exception){
 //            return response(['messege'=>$exception->getMessage()]);
 //        }
+    }
 
+    public function createUsersApi(Request $request)
+    {
+//        dd($request->name);
+        $user=new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'password' => bcrypt($request->password),
+//            'type' => $request->type,
+            'image_profile' => $request->image_profile,
+        ]);
+        $user->save();
+        $this->createProfileUser($user,$request->age,$request->tel,$request->city);
+        return response($user);
+    }
+
+    private function createProfileUser(User $user ,$age,$tel,$city)
+    {
+        $profile=new Profile([
+            'age'=>$age,
+            'tel'=>$tel,
+            'city'=>$city,
+        ]);
+        $profile->user()->associate($user);
+        $profile->save();
     }
 }

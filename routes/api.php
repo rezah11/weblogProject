@@ -27,5 +27,6 @@ Route::get('/test',function (){
 });
 Route::group(['prefix'=>'user'],function (){
    Route::get('/users',[\App\Http\Controllers\userController::class,'allUsersApi'])->name('usersApi');
+   Route::post('/create',[\App\Http\Controllers\userController::class,'createUsersApi'])->name('createUsersApi');
    Route::get('/{id}',[\App\Http\Controllers\userController::class,'userApi'])->name('userApi');
 });
