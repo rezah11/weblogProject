@@ -175,4 +175,11 @@ class userController extends Controller
         $profile->city = $city;
         $profile->save();
     }
+
+    public function deleteUserApi(Request $request,$id)
+    {
+        $user=User::findOrFail($id);
+        $user->delete();
+        return response(null,204);
+    }
 }

@@ -30,4 +30,5 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/{id}', [\App\Http\Controllers\userController::class, 'userApi'])->name('userApi');
     Route::post('/create', [\App\Http\Controllers\userController::class, 'createUsersApi'])->name('createUsersApi');
     Route::put('/update/{id}', [\App\Http\Controllers\userController::class, 'updateUsersApi'])->name('updateUsersApi');
+    Route::delete('/delete/{id}', [\App\Http\Controllers\userController::class, 'deleteUserApi'])->name('deleteUserApi');
 });
