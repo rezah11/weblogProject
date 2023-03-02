@@ -130,6 +130,7 @@ class userController extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
+            'email_verified_at' => now(),
             'gender' => $request->gender,
             'password' => bcrypt($request->password),
 //            'type' => $request->type,
@@ -137,7 +138,7 @@ class userController extends Controller
         ]);
         $user->save();
         $this->createProfileUser($user, $request->age, $request->tel, $request->city);
-        return response($user,201);
+        return response($user, 201);
     }
 
     private function createProfileUser(User $user, $age, $tel, $city)
@@ -162,12 +163,12 @@ class userController extends Controller
         $user->image_profile = $request->image_profile;
         $user->save();
         $this->updateProfileApi($id, $request->age, $request->tel, $request->city);
-        return response($user,202);
+        return response($user, 202);
     }
 
     private function updateProfileApi($id, $age, $tel, $city)
     {
-        $profile = Profile::query()->where('user_id',$id)->first();
+        $profile = Profile::query()->where('user_id', $id)->first();
 //        dd($age,$tel,$city,$profile);
         $profile->age = $age;
         $profile->tel = $tel;
