@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\userRequest;
 use App\Models\Comment;
 use App\Models\Follow;
 use App\Models\Likeable;
@@ -123,10 +124,10 @@ class userController extends Controller
 //        }
     }
 
-    public function createUsersApi(Request $request)
+    public function createUsersApi(userRequest $request)
     {
 //        dd($request->name);
-        $user=new User([
+        $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'gender' => $request->gender,
@@ -135,18 +136,42 @@ class userController extends Controller
             'image_profile' => $request->image_profile,
         ]);
         $user->save();
-        $this->createProfileUser($user,$request->age,$request->tel,$request->city);
+        $this->createProfileUser($user, $request->age, $request->tel, $request->city);
         return response($user);
     }
 
-    private function createProfileUser(User $user ,$age,$tel,$city)
+    private function createProfileUser(User $user, $age, $tel, $city)
     {
-        $profile=new Profile([
-            'age'=>$age,
-            'tel'=>$tel,
-            'city'=>$city,
+        $profile = new Profile([
+            'age' => $age,
+            'tel' => $tel,
+            'city' => $city,
         ]);
         $profile->user()->associate($user);
+        $profile->save();
+    }
+
+    public function updateUsersApi($id, userRequest $request)
+    {
+//        dd($request);
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->gender = $request->gender;
+        $user->password = $request->password;
+        $user->image_profile = $request->image_profile;
+        $user->save();
+        $this->updateProfileApi($id, $request->age, $request->tel, $request->city);
+        return response($user);
+    }
+
+    private function updateProfileApi($id, $age, $tel, $city)
+    {
+        $profile = Profile::query()->where('user_id',$id)->first();
+//        dd($age,$tel,$city,$profile);
+        $profile->age = $age;
+        $profile->tel = $tel;
+        $profile->city = $city;
         $profile->save();
     }
 }

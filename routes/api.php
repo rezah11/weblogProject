@@ -18,15 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test',function (){
-//    return [
+Route::get('/test', function () {
+//    return [ٍ
 //        'name'=>'reza',
 //        'family'=>'hosseini',
 //    ];
-    return response()->json(['error'=>'testErr'],401);
+    return response()->json(['error' => 'testErr'], 401);
 });
-Route::group(['prefix'=>'user'],function (){
-   Route::get('/users',[\App\Http\Controllers\userController::class,'allUsersApi'])->name('usersApi');
-   Route::post('/create',[\App\Http\Controllers\userController::class,'createUsersApi'])->name('createUsersApi');
-   Route::get('/{id}',[\App\Http\Controllers\userController::class,'userApi'])->name('userApi');
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/users', [\App\Http\Controllers\userController::class, 'allUsersApi'])->name('usersApi');
+    Route::get('/{id}', [\App\Http\Controllers\userController::class, 'userApi'])->name('userApi');
+    Route::post('/create', [\App\Http\Controllers\userController::class, 'createUsersApi'])->name('createUsersApi');
+    Route::post('/update/{id}', [\App\Http\Controllers\userController::class, 'updateUsersApi'])->name('updateUsersApi');
 });
