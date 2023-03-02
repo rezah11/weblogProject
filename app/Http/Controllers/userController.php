@@ -137,7 +137,7 @@ class userController extends Controller
         ]);
         $user->save();
         $this->createProfileUser($user, $request->age, $request->tel, $request->city);
-        return response($user);
+        return response($user,201);
     }
 
     private function createProfileUser(User $user, $age, $tel, $city)
@@ -162,7 +162,7 @@ class userController extends Controller
         $user->image_profile = $request->image_profile;
         $user->save();
         $this->updateProfileApi($id, $request->age, $request->tel, $request->city);
-        return response($user);
+        return response($user,202);
     }
 
     private function updateProfileApi($id, $age, $tel, $city)
