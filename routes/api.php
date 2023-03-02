@@ -34,4 +34,5 @@ Route::group(['prefix' => 'user'], function () {
 });
 Route::group(['prefix'=>'post'],function (){
    Route::get('/all',[\App\Http\Controllers\PostController::class,'allPostsApi'])->name('allPostsApi');
+   Route::get('/{id}',[\App\Http\Controllers\PostController::class,'postApi'])->name('postApi');
 });

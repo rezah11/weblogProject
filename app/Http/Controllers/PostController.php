@@ -213,4 +213,9 @@ class PostController extends Controller
         $post=Post::all();
         return response($post);
     }
+    public function postApi(Request $request)
+    {
+        $post=Post::findOrFail($request->id);
+        return response($post);
+    }
 }
