@@ -27,7 +27,7 @@ class PostController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     public function createPost(PostRequest $request)
@@ -203,5 +203,14 @@ class PostController extends Controller
         }
         $user->delete();
         return redirect()->back();
+    }
+
+    /*
+     * post api
+     * */
+    public function allPostsApi()
+    {
+        $post=Post::all();
+        return response($post);
     }
 }

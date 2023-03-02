@@ -32,3 +32,6 @@ Route::group(['prefix' => 'user'], function () {
     Route::put('/update/{id}', [\App\Http\Controllers\userController::class, 'updateUsersApi'])->name('updateUsersApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\userController::class, 'deleteUserApi'])->name('deleteUserApi');
 });
+Route::group(['prefix'=>'post'],function (){
+   Route::get('/all',[\App\Http\Controllers\PostController::class,'allPostsApi'])->name('allPostsApi');
+});
