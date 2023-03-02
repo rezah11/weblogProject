@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
         */
         if ($request->wantsJson()) {
             $e = $this->prepareException($e);
-            dd($e->getMessage(),$e->getCode(),$e->getStatusCode());
+//            dd($e->getMessage(),$e->getCode(),$e->getStatusCode());
             $code = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : $e->getCode();
 //            dd($code);
             return response(['message' => $e->getMessage()], empty($code) ? 500 : $code);
