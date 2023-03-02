@@ -48,6 +48,7 @@ class Handler extends ExceptionHandler
 
 
         if ($request->wantsJson()) {
+//            dd($e,$e->getCode());
 
             if ($e instanceof ValidationException) {
                 return $this->validationHandler($request, $e);
@@ -77,7 +78,7 @@ class Handler extends ExceptionHandler
      * handler validation error api
      */
 
-    
+
     private function validationHandler($request, Throwable $e)
     {
         return response(['errors' => [$e->errors()]], 422);
