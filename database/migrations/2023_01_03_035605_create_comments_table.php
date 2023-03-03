@@ -20,8 +20,8 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('parent_id')->nullable()->default(0);
             $table->boolean('status')->default(false);
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->OnDelete('cascade');
-            $table->foreign('post_id')->references('id')->on('posts')->onUpdate('cascade')->OnDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('post_id')->references('id')->on('posts')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

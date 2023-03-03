@@ -249,4 +249,18 @@ class PostController extends Controller
         $post->save();
         return response($post,202);
     }
+
+    public function deletePostApi(Request $request)
+    {
+        $post=Post::findOrFail($request->id);
+        $images = Image::query()->where('post_id', $request->id);
+
+        if (!empty($images->pluck('image_url')->toArray())) {
+//            dd('inja');
+            $this->deleteImageFiles($images->pluck('image_url')->toArray());
+
+        }
+        $post->delete();
+        return response(null,204);
+    }
 }
