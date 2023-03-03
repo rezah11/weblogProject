@@ -221,7 +221,7 @@ class PostController extends Controller
         return response($post);
     }
 
-    public function createPostApi(Request $request)
+    public function createPostApi(PostRequest $request)
     {
 //        dd($request->images[0]);
         $post=new Post([
@@ -234,5 +234,19 @@ class PostController extends Controller
 //        dd($request->images);
         $request->images ?? $this->savaPostPics($request->file('images'), $post->id);
         return response($post,201);
+    }
+
+    public function updatePostApi($id,PostRequest $request)
+    {
+        $post=Post::findOrFail($id);
+        $post->title=$request->title;
+        $post->summary=$request->summary;
+        $post->content=$request->get('content');
+        if (isset($request->images)) {
+//            $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
+            $this->savaPostPics($request->file('images'), $post->id);
+        }
+        $post->save();
+        return response($post,202);
     }
 }
