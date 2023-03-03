@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
 
 
         if ($request->wantsJson()) {
-//            dd($e,$e->getCode());
+            dd($e,$e->getCode());
 
             if ($e instanceof ValidationException) {
                 return $this->validationHandler($request, $e);

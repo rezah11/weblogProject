@@ -52,6 +52,7 @@ class PostController extends Controller
 
     private function savaPostPics($images, $postId)
     {
+//        dd('sdf');
         foreach ($images as $image) {
             $name = Str::random(20) . $image->getClientOriginalName();
             $image->move('postPics', $name);
@@ -157,11 +158,11 @@ class PostController extends Controller
 
     public function deletePost($id)
     {
-        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete' , postPolicy::class);
+        \Illuminate\Support\Facades\Gate::forUser(auth()->user())->allows('delete', postPolicy::class);
 //        $comments=Comment::query()->where('post_id',$id);
-        $images=Image::query()->where('post_id',$id);
+        $images = Image::query()->where('post_id', $id);
 
-        if (!empty($images->pluck('image_url')->toArray())){
+        if (!empty($images->pluck('image_url')->toArray())) {
 //            dd('inja');
             $this->deleteImageFiles($images->pluck('image_url')->toArray());
 
@@ -180,24 +181,24 @@ class PostController extends Controller
 
     private function deleteImageFiles(array $toArray)
     {
-        foreach ($toArray as $value){
-            File::delete('postPics/'.$value);
+        foreach ($toArray as $value) {
+            File::delete('postPics/' . $value);
         }
     }
 
     public function removeUser()
     {
         \Illuminate\Support\Facades\Gate::forUser(auth()->user())->authorize('allUsers', auth()->user());
-        $user=User::findOrFail(\request()->id);
-        $postIds=Post::query()->where('user_id',\request()->id)->pluck('id');
+        $user = User::findOrFail(\request()->id);
+        $postIds = Post::query()->where('user_id', \request()->id)->pluck('id');
 
 //        dd($user,$postIds);
-        Follow::query()->where('following_user_id',\request()->id)->orWhere('followers_user_id',\request()->id)->delete();
-        Likeable::query()->where('user_id',\request()->id)->delete();
-        Comment::query()->where('user_id',\request()->id)->delete();
-        Profile::query()->where('user_id',\request()->id)->delete();
-        if (isset($postIds)){
-            foreach ($postIds as $id){
+        Follow::query()->where('following_user_id', \request()->id)->orWhere('followers_user_id', \request()->id)->delete();
+        Likeable::query()->where('user_id', \request()->id)->delete();
+        Comment::query()->where('user_id', \request()->id)->delete();
+        Profile::query()->where('user_id', \request()->id)->delete();
+        if (isset($postIds)) {
+            foreach ($postIds as $id) {
                 $this->deletePost($id);
             }
         }
@@ -210,12 +211,28 @@ class PostController extends Controller
      * */
     public function allPostsApi()
     {
-        $post=Post::all();
+        $post = Post::all();
         return response($post);
     }
+
     public function postApi(Request $request)
     {
-        $post=Post::findOrFail($request->id);
+        $post = Post::findOrFail($request->id);
         return response($post);
+    }
+
+    public function createPostApi(Request $request)
+    {
+//        dd($request->images[0]);
+        $post=new Post([
+            'user_id'=>$request->userId,
+            'title'=>$request->title,
+            'summary'=>$request->summary,
+            'content'=>$request->get('content'),
+        ]);
+        $post->save();
+//        dd($request->images);
+        $request->images ?? $this->savaPostPics($request->file('images'), $post->id);
+        return response($post,201);
     }
 }
