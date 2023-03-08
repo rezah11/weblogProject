@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
                 return $this->validationHandler($request, $e);
             }
             if ($e instanceof AuthenticationException) {
-                return $this->renderAthenticateException($request,$e);
+                return $this->renderAthenticateException($request, $e);
             }
             $e = $this->prepareException($e);
             return $this->otherErrorHandler($request, $e);
@@ -87,9 +87,13 @@ class Handler extends ExceptionHandler
         return response(['errors' => [$e->errors()]], 422);
     }
 
+    /*
+     * create Authentication Exception
+     * */
+
     private function renderAthenticateException($request, Throwable $e)
     {
-        return response(['errors'=>'شما دسترسی به این api ندارید'],401);
+        return response(['errors' => 'شما دسترسی به این api ندارید'], 401);
     }
 
 
