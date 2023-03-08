@@ -39,3 +39,7 @@ Route::group(['prefix' => 'post'], function () {
     Route::put('/update/{id}', [\App\Http\Controllers\PostController::class, 'updatePostApi'])->name('updatePostApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\PostController::class, 'deletePostApi'])->name('deletePostApi');
 });
+
+Route::group(['prefix'=>'auth'],function (){
+   Route::post('/login',[\App\Http\Controllers\authCntroller::class,'loginApi'])->name('loginApi');
+});

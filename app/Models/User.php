@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -13,11 +14,11 @@ class User extends Authenticatable
     const TYPE_USER = 'user';
     const TYPE_MANAGER = 'manager';
     const TYPES = [self::TYPE_ADMIN, self::TYPE_MANAGER, self::TYPE_USER];
-    const GENDER_MALE='male';
-    const GENDER_FEMALE='female';
-    const GENDER=[self::GENDER_MALE,self::GENDER_FEMALE];
+    const GENDER_MALE = 'male';
+    const GENDER_FEMALE = 'female';
+    const GENDER = [self::GENDER_MALE, self::GENDER_FEMALE];
 
-    use HasFactory, Notifiable ;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -53,17 +54,19 @@ class User extends Authenticatable
 
     public function following()
     {
-        return $this->belongsToMany(self::class, 'follows','followers_user_id','following_user_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'follows', 'followers_user_id', 'following_user_id')->withTimestamps();
     }
 
     public function followers()
     {
-        return $this->belongsToMany(self::class,'follows','following_user_id','followers_user_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'follows', 'following_user_id', 'followers_user_id')->withTimestamps();
     }
+
     public function post_likes()
     {
-        return $this->belongsToMany(Post::class,'likes')->withPivot('like')->withTimestamps();
-}
+        return $this->belongsToMany(Post::class, 'likes')->withPivot('like')->withTimestamps();
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id', 'id');
@@ -71,8 +74,9 @@ class User extends Authenticatable
 
     public function comments()
     {
-        return $this->hasMany(Comment::class,'user_id','id');
-}
+        return $this->hasMany(Comment::class, 'user_id', 'id');
+    }
+
     public function isAdmin()
     {
         return $this->type === self::TYPE_ADMIN;
@@ -90,12 +94,20 @@ class User extends Authenticatable
 
     public function likes()
     {
-        return $this->hasMany(Likeable::class,'user_id','id');
+        return $this->hasMany(Likeable::class, 'user_id', 'id');
     }
 
     public function profile()
     {
-        return $this->hasOne(Profile::class,'user_id','id');
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+    public function generateToken()
+    {
+        $token = Str::random(50);
+        $this->remember_token=$token;
+        $this->save();
+        return $token;
     }
 
 }
