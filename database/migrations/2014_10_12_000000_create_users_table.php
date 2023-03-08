@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('type',\App\Models\User::TYPES)->default(\App\Models\User::TYPE_USER);
             $table->string('image_profile',150)->default('avatar1.png');
+            $table->string('api_token',100)->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });
