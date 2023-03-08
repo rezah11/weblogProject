@@ -25,20 +25,20 @@ Route::get('/test', function () {
 //    ];
     return response()->json(['error' => 'testErr'], 401);
 });
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user','middleware'=>'api'], function () {
     Route::get('/users', [\App\Http\Controllers\userController::class, 'allUsersApi'])->name('usersApi');
     Route::get('/{id}', [\App\Http\Controllers\userController::class, 'userApi'])->name('userApi');
     Route::post('/create', [\App\Http\Controllers\userController::class, 'createUsersApi'])->name('createUsersApi');
     Route::put('/update/{id}', [\App\Http\Controllers\userController::class, 'updateUsersApi'])->name('updateUsersApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\userController::class, 'deleteUserApi'])->name('deleteUserApi');
-})->middleware(['auth'=>'api']);
-Route::group(['prefix' => 'post'], function () {
+});
+Route::group(['prefix' => 'post','middleware'=>'api'], function () {
     Route::get('/all', [\App\Http\Controllers\PostController::class, 'allPostsApi'])->name('allPostsApi');
     Route::get('/{id}', [\App\Http\Controllers\PostController::class, 'postApi'])->name('postApi');
     Route::post('/create', [\App\Http\Controllers\PostController::class, 'createPostApi'])->name('createPostApi');
     Route::put('/update/{id}', [\App\Http\Controllers\PostController::class, 'updatePostApi'])->name('updatePostApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\PostController::class, 'deletePostApi'])->name('deletePostApi');
-})->middleware(['auth'=>'api']);
+});
 
 Route::group(['prefix'=>'auth'],function (){
    Route::post('/login',[\App\Http\Controllers\authCntroller::class,'loginApi'])->name('loginApi');
