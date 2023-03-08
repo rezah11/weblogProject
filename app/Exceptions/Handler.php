@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -48,13 +49,15 @@ class Handler extends ExceptionHandler
 
 
         if ($request->wantsJson()) {
-            dd($e,$e->getCode());
+//            dd($e,$e->getCode());
 
             if ($e instanceof ValidationException) {
                 return $this->validationHandler($request, $e);
             }
+            if ($e instanceof AuthenticationException) {
+                return $this->renderAthenticateException($request,$e);
+            }
             $e = $this->prepareException($e);
-
             return $this->otherErrorHandler($request, $e);
 
 
@@ -82,6 +85,11 @@ class Handler extends ExceptionHandler
     private function validationHandler($request, Throwable $e)
     {
         return response(['errors' => [$e->errors()]], 422);
+    }
+
+    private function renderAthenticateException($request, Throwable $e)
+    {
+        return response(['errors'=>'شما دسترسی به این api ندارید'],401);
     }
 
 
