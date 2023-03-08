@@ -114,6 +114,7 @@ class userController extends Controller
 
     public function userApi(Request $request)
     {
+//        auth()->guard('api')->user();
 //        dd($request->id);
 //        try {
 //        $a = 5 / 0;
