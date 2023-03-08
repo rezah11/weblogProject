@@ -107,7 +107,7 @@ class User extends Authenticatable
         $token = Str::random(50);
         $this->api_token=$token;
         $this->save();
-        return $token;
+        return ["token"=>$token];
     }
 
 }
