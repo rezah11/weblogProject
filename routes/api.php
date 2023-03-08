@@ -31,14 +31,14 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('/create', [\App\Http\Controllers\userController::class, 'createUsersApi'])->name('createUsersApi');
     Route::put('/update/{id}', [\App\Http\Controllers\userController::class, 'updateUsersApi'])->name('updateUsersApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\userController::class, 'deleteUserApi'])->name('deleteUserApi');
-});
+})->middleware(['auth'=>'api']);
 Route::group(['prefix' => 'post'], function () {
     Route::get('/all', [\App\Http\Controllers\PostController::class, 'allPostsApi'])->name('allPostsApi');
     Route::get('/{id}', [\App\Http\Controllers\PostController::class, 'postApi'])->name('postApi');
     Route::post('/create', [\App\Http\Controllers\PostController::class, 'createPostApi'])->name('createPostApi');
     Route::put('/update/{id}', [\App\Http\Controllers\PostController::class, 'updatePostApi'])->name('updatePostApi');
     Route::delete('/delete/{id}', [\App\Http\Controllers\PostController::class, 'deletePostApi'])->name('deletePostApi');
-});
+})->middleware(['auth'=>'api']);
 
 Route::group(['prefix'=>'auth'],function (){
    Route::post('/login',[\App\Http\Controllers\authCntroller::class,'loginApi'])->name('loginApi');
