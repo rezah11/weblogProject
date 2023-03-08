@@ -19,4 +19,11 @@ class authController extends Controller
         }
         return response(['error'=>'اطلاعات کاربری را اشتباه وارد کرده اید'],401);
     }
+
+    public function logoutApi()
+    {
+        $user=auth()->guard('api')->user();
+        $user->logout();
+        return $user;
+    }
 }
