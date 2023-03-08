@@ -105,7 +105,7 @@ class User extends Authenticatable
     public function generateToken()
     {
         $token = Str::random(50);
-        $this->remember_token=$token;
+        $this->api_token=$token;
         $this->save();
         return $token;
     }
