@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
+    use Notifiable,HasApiTokens,HasApiTokens;
     const TYPE_ADMIN = 'admin';
     const TYPE_USER = 'user';
     const TYPE_MANAGER = 'manager';
