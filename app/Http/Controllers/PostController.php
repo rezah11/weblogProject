@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Jobs\waterMarkImageJob;
 use App\Models\Comment;
 use App\Models\Follow;
 use App\Models\Image;
@@ -16,11 +17,14 @@ use App\Policies\userPolicy;
 use App\Rules\postRules;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use function PHPUnit\Framework\isNull;
+use function PHPUnit\Framework\isTrue;
 
 class PostController extends Controller
 {
@@ -32,30 +36,45 @@ class PostController extends Controller
 
     public function createPost(PostRequest $request)
     {
-
+//        dd());
+//        $image1 = \request()->file('image')->store(public_path('postPics/' . '2Z86a9diniqigGcAJn8MAzarakhsh-AP29 (1) (1).jpg'));
+//        dd($image1);/
         $post = new Post();
         $user = auth()->user();
         \Illuminate\Support\Facades\Gate::forUser($user)->authorize('create', $post);
 
 //        $request->file('images')->getO
 //        dd($request->file('images')->storeAs(asset('css'),'a.jpg'));
+//        dd($request->file('images'));
         $post = $post->newQuery()->create(array(
             'user_id' => $user->id,
             'title' => $request->title,
             'summary' => $request->summary,
             'content' => $request->get('content'),
         ));
-//        dd($post->id);
-        $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
+        if (isset($request->images)) {
+            $this->savaPostPics($request->file('images'), $post->id);
+        }
+//        dd(isset($request->images));
+//        dd('inja');
         return redirect()->back()->with('success', 'sent data successfully');
     }
 
     private function savaPostPics($images, $postId)
     {
 //        dd('sdf');
+//        return true;
         foreach ($images as $image) {
             $name = Str::random(20) . $image->getClientOriginalName();
             $image->move('postPics', $name);
+//
+//            $image1 = File::get(public_path('postPics/' . $name));
+
+//            Cache::put('imageFile',$image,1);
+
+            waterMarkImageJob::dispatch(
+                $name
+            );
 //            dd('first');
             Image::query()->create([
                 'image_url' => $name,
@@ -224,35 +243,35 @@ class PostController extends Controller
     public function createPostApi(PostRequest $request)
     {
 //        dd($request->images[0]);
-        $post=new Post([
-            'user_id'=>$request->userId,
-            'title'=>$request->title,
-            'summary'=>$request->summary,
-            'content'=>$request->get('content'),
+        $post = new Post([
+            'user_id' => $request->userId,
+            'title' => $request->title,
+            'summary' => $request->summary,
+            'content' => $request->get('content'),
         ]);
         $post->save();
 //        dd($request->images);
         $request->images ?? $this->savaPostPics($request->file('images'), $post->id);
-        return response($post,201);
+        return response($post, 201);
     }
 
-    public function updatePostApi($id,PostRequest $request)
+    public function updatePostApi($id, PostRequest $request)
     {
-        $post=Post::findOrFail($id);
-        $post->title=$request->title;
-        $post->summary=$request->summary;
-        $post->content=$request->get('content');
+        $post = Post::findOrFail($id);
+        $post->title = $request->title;
+        $post->summary = $request->summary;
+        $post->content = $request->get('content');
         if (isset($request->images)) {
 //            $request->all()->images ?? $this->savaPostPics($request->file('images'), $post->id);
             $this->savaPostPics($request->file('images'), $post->id);
         }
         $post->save();
-        return response($post,202);
+        return response($post, 202);
     }
 
     public function deletePostApi(Request $request)
     {
-        $post=Post::findOrFail($request->id);
+        $post = Post::findOrFail($request->id);
         $images = Image::query()->where('post_id', $request->id);
 
         if (!empty($images->pluck('image_url')->toArray())) {
@@ -261,6 +280,6 @@ class PostController extends Controller
 
         }
         $post->delete();
-        return response(null,204);
+        return response(null, 204);
     }
 }
